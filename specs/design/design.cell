@@ -1,0 +1,5 @@
+title Hello
+
+component hello-webapp as "Hello Web App" web-application
+
+north -> hello-webapp
