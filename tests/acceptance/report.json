@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 3,
+  "generatedAt": "2026-11-19T14:38:03.065Z",
+  "commit": "9eaa4d25368989234279ff73b17f5f087f3d147d",
+  "baseUrl": "http://http-run1-hello-he-development-default-ffaaa98f.openchoreoapis.localhost:19080/",
+  "isolation": "The app is a static, view-only greeting page with no containers or writes. Each scenario opened the page fresh and asserted only on what it rendered; nothing was created or changed, so no scenario depended on another.",
+  "captureWindow": {
+    "first": "2026-11-19T14:37:54.396Z",
+    "last": "2026-11-19T14:37:58.950Z"
+  },
+  "scenarios": [
+    {
+      "feature": "F1 Greeting",
+      "featureFile": "specs/validation/acceptance/F1-greeting.feature",
+      "line": 6,
+      "rule": "Opening the app shows the greeting \"Hello, World!\"",
+      "scenario": "A visitor opens the app",
+      "tags": [
+        "@story-F1.1"
+      ],
+      "outcome": "passed",
+      "steps": [
+        {
+          "text": "Vera the visitor has the app address",
+          "keyword": "Given",
+          "command": "curl -s -o /dev/null -w '%{http_code}' <base url>",
+          "exit": 0,
+          "observed": "200"
+        },
+        {
+          "text": "Vera opens the app",
+          "keyword": "When",
+          "command": "agent-browser open <base url>"
+        },
+        {
+          "text": "the page shows \"Hello, World!\"",
+          "keyword": "Then",
+          "command": "agent-browser wait --text \"Hello, World!\" --timeout 5000",
+          "exit": 0
+        }
+      ]
+    },
+    {
+      "feature": "F1 Greeting",
+      "featureFile": "specs/validation/acceptance/F1-greeting.feature",
+      "line": 14,
+      "rule": "The greeting is shown without signing in",
+      "scenario": "A visitor who has not signed in sees the greeting",
+      "tags": [
+        "@story-F1.2"
+      ],
+      "outcome": "passed",
+      "steps": [
+        {
+          "text": "Vera the visitor has never signed in",
+          "keyword": "Given",
+          "command": "agent-browser open <base url> in a fresh session with no login"
+        },
+        {
+          "text": "Vera opens the app",
+          "keyword": "When",
+          "command": "agent-browser open <base url>"
+        },
+        {
+          "text": "the page shows \"Hello, World!\"",
+          "keyword": "Then",
+          "command": "agent-browser wait --text \"Hello, World!\" --timeout 5000",
+          "exit": 0
+        },
+        {
+          "text": "Vera is not asked to sign in",
+          "keyword": "And",
+          "command": "agent-browser get url",
+          "exit": 0,
+          "observed": "stayed on the app host at /greeting; no redirect to an identity provider; snapshot -i listed no sign-in control or field"
+        }
+      ]
+    },
+    {
+      "feature": "F1 Greeting",
+      "featureFile": "specs/validation/acceptance/F1-greeting.feature",
+      "line": 24,
+      "rule": "The page is view only",
+      "scenario": "The page offers nothing to enter",
+      "tags": [
+        "@story-F1.1",
+        "@negative"
+      ],
+      "outcome": "passed",
+      "steps": [
+        {
+          "text": "Vera the visitor has opened the app",
+          "keyword": "Given",
+          "command": "agent-browser wait --text \"Hello, World!\" --timeout 5000",
+          "exit": 0
+        },
+        {
+          "text": "the page has no field to type a name into",
+          "keyword": "Then",
+          "command": "agent-browser get count \"input, textarea, select, [contenteditable=true]\"",
+          "exit": 0,
+          "observed": "0"
+        }
+      ]
+    }
+  ]
+}
